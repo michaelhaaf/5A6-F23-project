@@ -1,4 +1,4 @@
-package com.example.emptyactivity
+package com.example.michaelappmilestone2
 
 import org.junit.Assert.assertEquals
 import org.junit.Test
