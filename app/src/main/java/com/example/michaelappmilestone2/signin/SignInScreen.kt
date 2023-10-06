@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.example.compose.jetsurvey.signinsignup
+package com.example.michaelappmilestone2.signin
 
 import android.content.res.Configuration.UI_MODE_NIGHT_NO
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
@@ -60,10 +60,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.michaelappmilestone2.R
-import com.example.michaelappmilestone2.signin.EmailState
-import com.example.michaelappmilestone2.signin.EmailStateSaver
-import com.example.michaelappmilestone2.signin.PasswordState
-import com.example.michaelappmilestone2.signin.TextFieldState
 import com.example.michaelappmilestone2.ui.theme.ActivityTheme
 
 @Composable
@@ -72,7 +68,7 @@ fun SignInScreen(
     onCreateAccount: () -> Unit = {},
     onContinueAsGuest: () -> Unit = {},
 ) {
-    Surface() {
+    Surface {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
@@ -81,7 +77,11 @@ fun SignInScreen(
         ) {
             Banner()
             Spacer(modifier = Modifier.height(16.dp))
-            SignInUI(onSignIn, onCreateAccount, onContinueAsGuest)
+            SignInUI(
+                onSignIn = onSignIn,
+                onCreateAccount = onContinueAsGuest,
+                onContinueAsGuest = onCreateAccount
+            )
         }
     }
 }
@@ -119,8 +119,8 @@ fun EmailField(
 @OptIn(ExperimentalMaterial3Api::class) // OutlinedTextField is experimental in m3
 @Composable
 fun PasswordField(
-    passwordState: TextFieldState = remember { PasswordState() },
     modifier: Modifier = Modifier,
+    passwordState: TextFieldState = remember { PasswordState() },
 ) {
     val showPassword = rememberSaveable { mutableStateOf(false) }
     OutlinedTextField(
@@ -188,23 +188,24 @@ fun TextFieldError(textError: String) {
 
 @Composable
 fun SignInUI(
+    modifier: Modifier = Modifier,
     onSignIn: () -> Unit = {},
     onCreateAccount: () -> Unit = {},
     onContinueAsGuest: () -> Unit,
-    modifier: Modifier = Modifier
 ) {
     val emailState by rememberSaveable(stateSaver = EmailStateSaver) {
         mutableStateOf(EmailState())
     }
-    val passwordState = remember { PasswordState() }
+    val passwordState by rememberSaveable(stateSaver = PasswordStateSaver)
+    { mutableStateOf(PasswordState()) }
 
     Column(
-        modifier = Modifier
+        modifier = modifier
             .padding(horizontal = 20.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        EmailField()
-        PasswordField()
+        EmailField(emailState = emailState)
+        PasswordField(passwordState = passwordState)
         Button(
             onClick = onSignIn,
             modifier = Modifier
@@ -216,7 +217,7 @@ fun SignInUI(
             )
         }
         FilledTonalButton(
-            onClick = onSignIn,
+            onClick = onCreateAccount,
             modifier = Modifier
                 .fillMaxWidth()
         ) {
@@ -225,7 +226,7 @@ fun SignInUI(
             )
         }
         OutlinedButton(
-            onClick = onSignIn,
+            onClick = onContinueAsGuest,
             modifier = Modifier
                 .fillMaxWidth()
         ) {
