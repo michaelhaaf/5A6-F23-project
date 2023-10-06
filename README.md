@@ -1,14 +1,16 @@
-# PROJECT NAME
+# Set Jurvey
 
 ## Goal
-A brief description of your application. Should answer, as concisely as you can: what is it? what is its purpose?
+
+This application is some kind of a survey thing. This goal will be updated with a complete proposal
+and task list by Oct 20.
 
 ## Quick-start
-How to install and launch your application. These should include instructions for:
 - (by Sprint 1) building and running your release from source code (i.e. your github repo)
 
 ## Screenshots of application
 - (by Sprint 1): Screenshots from each of the main screens of your application.
 
 ## Team members
-List each person's name and email address.
+
+Michael Haaf -- michael.haaf@johnabbott.qc.ca
